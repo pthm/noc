@@ -1,0 +1,16 @@
+[tools]
+bun = "latest"
+watchexec = "latest"
+
+[tasks.dev]
+description = "Start dev server with registry watching"
+depends = ["registry"]
+run = """
+mise watch registry &
+bun run server.ts
+"""
+
+[tasks.registry]
+description = "Regenerate sketch registry"
+run = "bun run lib/generate-registry.ts"
+sources = ["sketches/**/*.ts"]
