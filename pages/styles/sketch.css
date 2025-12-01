@@ -1,0 +1,145 @@
+/* ==========================================================================
+   Sketch Viewer Page Styles
+   ========================================================================== */
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    display: block;
+}
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+
+.back-link {
+    position: fixed;
+    top: var(--spacing-lg);
+    left: var(--spacing-lg);
+    z-index: 1000;
+}
+
+/* ==========================================================================
+   Debug Panel
+   ========================================================================== */
+
+.debug-container {
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    z-index: 1000;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+}
+
+.debug-toggle {
+    background: var(--color-bg-overlay);
+    color: var(--color-text-subtle);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition:
+        color var(--transition-fast),
+        background var(--transition-fast);
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.debug-toggle:hover,
+.debug-toggle.active {
+    color: var(--color-text-primary);
+    background: var(--color-bg-overlay-hover);
+}
+
+.debug-panel {
+    margin-top: var(--spacing-sm);
+    background: var(--color-bg-overlay-hover);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    min-width: 200px;
+}
+
+/* ==========================================================================
+   Debug Stats
+   ========================================================================== */
+
+.debug-stats {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+}
+
+.debug-section-label {
+    color: #bbb;
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: var(--spacing-sm);
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.debug-section-label:first-child {
+    margin-top: 0;
+}
+
+.debug-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.debug-label {
+    color: var(--color-text-subtle);
+}
+
+.debug-value {
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Debug Chart
+   ========================================================================== */
+
+.debug-chart {
+    width: 100%;
+    height: 80px;
+    border-radius: var(--radius-sm);
+    display: block;
+}
+
+.debug-legend {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+}
+
+.debug-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.debug-legend-color {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-sm);
+}
+
+/* Legend color variants - use these classes instead of inline styles */
+.debug-legend-color--fps {
+    background: var(--color-accent-teal);
+}
+
+.debug-legend-color--frame-time {
+    background: var(--color-accent-red);
+}
