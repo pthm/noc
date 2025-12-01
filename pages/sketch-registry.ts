@@ -3,8 +3,10 @@
 
 import type { SketchSetup } from "../sketches/types";
 
-import example from "../sketches/example";
+import waves from "../sketches/waves";
+import circle from "../sketch../sketches/waves
 
 export const sketches: Record<string, SketchSetup> = {
-  "example": example,
+  "waves": waves,
+  "circle": circle,
 };

@@ -5,7 +5,7 @@ export default defineSketch(
   {
     title: "Pulsing Circle",
     description: "A simple circle that pulses using a sine wave",
-    date: "2024-11-30",
+    date: "2025-11-30",
   },
   (p: p5) => {
     p.setup = () => {
