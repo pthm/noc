@@ -17,6 +17,12 @@ async function generateRegistry() {
     // Skip utility files
     if (file === "types.ts" || file === "index.ts") continue;
 
+    // Only include top-level .ts files or folder/index.ts files
+    // Skip non-index files inside folders (like entity classes)
+    const isTopLevel = !file.includes("/");
+    const isFolderIndex = file.endsWith("/index.ts");
+    if (!isTopLevel && !isFolderIndex) continue;
+
     // Derive slug
     let slug: string;
     if (file.endsWith("/index.ts")) {

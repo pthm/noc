@@ -14,3 +14,7 @@ bun run server.ts
 description = "Regenerate sketch registry"
 run = "bun run lib/generate-registry.ts"
 sources = ["sketches/**/*.ts"]
+
+[tasks.new-sketch]
+description = "Create a new sketch boilerplate"
+run = "bun run scripts/new-sketch.ts"
