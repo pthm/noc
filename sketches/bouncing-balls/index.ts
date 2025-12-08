@@ -5,11 +5,11 @@ import { BouncingBallSketch } from "./BouncingBallSketch";
 export default defineSketch(
   {
     title: "Bouncing Balls",
-    description: "Click to spawn bouncing balls - demonstrates EntitySketch architecture",
+    description:
+      "Colorful spheres ricochet through space, pulled by invisible gravity. Click anywhere to birth new chaos into the system",
     date: "2025-12-07",
   },
   (p: p5) => {
-    const sketch = new BouncingBallSketch();
-    sketch.attach(p);
-  }
+    new BouncingBallSketch(p);
+  },
 );

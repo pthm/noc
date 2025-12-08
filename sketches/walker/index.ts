@@ -5,11 +5,11 @@ import { WalkerSketch } from "./WalkerSketch";
 export default defineSketch(
   {
     title: "Walker",
-    description: "A random walker",
+    description:
+      "A wandering spirit traces an unpredictable path through the void, each step a roll of the cosmic dice",
     date: "2025-12-02",
   },
   (p: p5) => {
-    const sketch = new WalkerSketch();
-    sketch.attach(p);
-  }
+    new WalkerSketch(p);
+  },
 );

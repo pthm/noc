@@ -1,21 +1,21 @@
 import type p5 from "p5";
-import type { Entity, EntitySketch } from "../../lib/entity-sketch";
+import { Entity } from "../../lib/entity-sketch";
 
-export class Walker implements Entity {
+export class Walker extends Entity {
   private x: number;
   private y: number;
 
   private size: number;
 
   constructor(
-    private sketch: EntitySketch,
+    private p: p5,
     x: number,
     y: number,
   ) {
+    super();
     this.x = x;
     this.y = y;
     this.size = 10;
-    this.sketch.registerEntity(this);
   }
 
   update(p: p5): void {
@@ -31,9 +31,5 @@ export class Walker implements Entity {
     p.stroke(255, 30);
     p.fill(255, 30);
     p.circle(this.x, this.y, this.size);
-  }
-
-  destroy(): void {
-    this.sketch.unregisterEntity(this);
   }
 }

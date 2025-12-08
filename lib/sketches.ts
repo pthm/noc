@@ -1,6 +1,6 @@
 import { Glob } from "bun";
 import path from "path";
-import type { SketchMeta, SketchSetup } from "../sketches/types";
+import type { SketchMeta } from "../sketches/types";
 
 export type SketchInfo = {
   slug: string;
@@ -8,6 +8,26 @@ export type SketchInfo = {
 };
 
 const SKETCHES_DIR = path.join(import.meta.dir, "../sketches");
+
+// Extract metadata from source without executing (avoids p5 import issues in Node)
+function extractMeta(source: string): SketchMeta | null {
+  // Match defineSketch({ title: "...", ... }, ...)
+  const match = source.match(/defineSketch\s*\(\s*(\{[\s\S]*?\})\s*,/);
+  if (!match) return null;
+
+  try {
+    // Simple extraction - handles basic object literals
+    const metaStr = match[1];
+    const title = metaStr.match(/title:\s*["'`]([^"'`]+)["'`]/)?.[1];
+    const description = metaStr.match(/description:\s*["'`]([^"'`]+)["'`]/)?.[1];
+    const date = metaStr.match(/date:\s*["'`]([^"'`]+)["'`]/)?.[1];
+
+    if (!title) return null;
+    return { title, description, date };
+  } catch {
+    return null;
+  }
+}
 
 export async function discoverSketches(): Promise<SketchInfo[]> {
   const sketches: SketchInfo[] = [];
@@ -21,33 +41,31 @@ export async function discoverSketches(): Promise<SketchInfo[]> {
     // Skip utility files
     if (file === "types.ts" || file === "index.ts") continue;
 
+    // Only include top-level .ts files or folder/index.ts files
+    const isTopLevel = !file.includes("/");
+    const isFolderIndex = file.endsWith("/index.ts");
+    if (!isTopLevel && !isFolderIndex) continue;
+
     const filePath = path.join(SKETCHES_DIR, file);
 
     try {
-      const mod = await import(filePath);
-      const sketch: SketchSetup = mod.default;
+      const source = await Bun.file(filePath).text();
+      const meta = extractMeta(source);
 
-      if (!sketch?.meta || !sketch?.sketch) {
-        console.warn(
-          `Skipping ${file}: missing default export with meta/sketch`,
-        );
+      if (!meta) {
+        console.warn(`Skipping ${file}: couldn't extract meta`);
         continue;
       }
 
       // Derive slug from filename or folder name
       let slug: string;
       if (file.endsWith("/index.ts")) {
-        // Folder-based: use folder name
         slug = path.dirname(file);
       } else {
-        // Single file: use filename without extension
         slug = path.basename(file, ".ts");
       }
 
-      sketches.push({
-        slug,
-        meta: sketch.meta,
-      });
+      sketches.push({ slug, meta });
     } catch (e) {
       console.error(`Error loading sketch ${file}:`, e);
     }

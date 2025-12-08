@@ -31,7 +31,9 @@ if (existsSync(sketchDir)) {
 
 const today = new Date().toISOString().split("T")[0];
 
-const className = pascalCase.endsWith("Sketch") ? pascalCase : `${pascalCase}Sketch`;
+const className = pascalCase.endsWith("Sketch")
+  ? pascalCase
+  : `${pascalCase}Sketch`;
 
 const indexTs = `import type p5 from "p5";
 import { defineSketch } from "../types";
@@ -44,8 +46,7 @@ export default defineSketch(
     date: "${today}",
   },
   (p: p5) => {
-    const sketch = new ${className}();
-    sketch.attach(p);
+    new ${className}(p);
   }
 );
 `;
@@ -53,16 +54,20 @@ export default defineSketch(
 // Entity name from sketch name (e.g., "My Awesome Sketch" -> "MyAwesome")
 const entityName = pascalCase.replace(/Sketch$/, "") || "Circle";
 
-const sketchTs = `import { EntitySketch } from "../../lib/entity-sketch";
+const sketchTs = `import type p5 from "p5";
+import { EntitySketch } from "../../lib/entity-sketch";
 import { ${entityName} } from "./${entityName}";
 
 export class ${className} extends EntitySketch {
+  constructor(p: p5) {
+    super(p);
+  }
+
   setup(): void {
     const p = this.p;
     p.createCanvas(window.innerWidth, window.innerHeight);
 
-    // Create initial entity in the center
-    new ${entityName}(this, p.width / 2, p.height / 2);
+    this.add(new ${entityName}(p, p.width / 2, p.height / 2));
   }
 
   protected override preDraw(): void {
@@ -76,25 +81,23 @@ export class ${className} extends EntitySketch {
 `;
 
 const entityTs = `import type p5 from "p5";
-import type { Entity, EntitySketch } from "../../lib/entity-sketch";
+import { Entity } from "../../lib/entity-sketch";
 
-export class ${entityName} implements Entity {
+export class ${entityName} extends Entity {
   private x: number;
   private y: number;
   private radius: number;
 
   constructor(
-    private sketch: EntitySketch,
+    private p: p5,
     x: number,
     y: number,
     radius = 50
   ) {
+    super();
     this.x = x;
     this.y = y;
     this.radius = radius;
-
-    // Self-register with the sketch
-    this.sketch.registerEntity(this);
   }
 
   update(p: p5): void {
@@ -105,10 +108,6 @@ export class ${entityName} implements Entity {
     p.fill(255);
     p.noStroke();
     p.circle(this.x, this.y, this.radius * 2);
-  }
-
-  destroy(): void {
-    this.sketch.unregisterEntity(this);
   }
 }
 `;

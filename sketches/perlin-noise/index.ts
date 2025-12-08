@@ -5,11 +5,11 @@ import { PerlinNoiseSketch } from "./PerlinNoiseSketch";
 export default defineSketch(
   {
     title: "Perlin Noise",
-    description: "TODO: Add description",
+    description:
+      "A visual atlas of controlled randomness—24 tiles reveal how Perlin noise transforms from silk-smooth gradients to turbulent static",
     date: "2025-12-08",
   },
   (p: p5) => {
-    const sketch = new PerlinNoiseSketch();
-    sketch.attach(p);
-  }
+    new PerlinNoiseSketch(p);
+  },
 );

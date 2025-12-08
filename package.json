@@ -8,8 +8,7 @@
     "registry": "bun run lib/generate-registry.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/p5": "^1.7.7"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"

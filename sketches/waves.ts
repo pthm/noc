@@ -4,7 +4,7 @@ import { defineSketch } from "./types";
 export default defineSketch(
   {
     title: "Waves",
-    description: "Sinusoidal wave lines across the canvas",
+    description: "One hundred luminous waves cascade across darkness, their sinusoidal pulses creating an endless ocean of light in perpetual motion",
     date: "2025-11-30",
   },
   (p: p5) => {

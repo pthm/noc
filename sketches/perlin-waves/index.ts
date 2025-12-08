@@ -5,11 +5,11 @@ import { PerlinWavesSketch } from "./PerlinWavesSketch";
 export default defineSketch(
   {
     title: "Perlin Waves",
-    description: "TODO: Add description",
+    description:
+      "Forty organic waveforms flow and interweave like ribbons in wind, their motion governed by the natural mathematics of Perlin noise",
     date: "2025-12-08",
   },
   (p: p5) => {
-    const sketch = new PerlinWavesSketch();
-    sketch.attach(p);
-  }
+    new PerlinWavesSketch(p);
+  },
 );

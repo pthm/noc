@@ -1,63 +1,69 @@
 import type p5 from "p5";
-import type { Entity, EntitySketch } from "../../lib/entity-sketch";
+import { Entity } from "../../lib/entity-sketch";
 
-export class PerlinNoise implements Entity {
+export class PerlinNoise extends Entity {
   private width: number;
   private height: number;
   private x: number;
   private y: number;
 
   private incr: number;
+  private buffer: p5.Graphics | null = null;
+  private rendered = false;
 
   constructor(
-    private sketch: EntitySketch,
+    private p: p5,
     width: number,
     height: number,
     x: number,
     y: number,
-
     incr: number,
   ) {
+    super();
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
 
     this.incr = incr;
-
-    // Self-register with the sketch
-    this.sketch.registerEntity(this);
   }
 
-  setup(p: p5): void {}
-
-  update(p: p5): void {
-    // TODO: Add update logic
+  override setup(p: p5): void {
+    this.buffer = p.createGraphics(this.width, this.height);
+    this.buffer.pixelDensity(1);
   }
+
+  update(p: p5): void {}
 
   draw(p: p5): void {
-    p.loadPixels();
-    let yoff = 0;
-    for (let y = this.y; y < this.y + this.height; y++) {
-      let xoff = 0;
-      for (let x = this.x; x < this.x + this.width; x++) {
-        const idx = (x + y * p.width) * 4;
-        const b = p.noise(xoff, yoff) * 255;
-        p.pixels[idx] = b;
-        p.pixels[idx + 1] = b;
-        p.pixels[idx + 2] = b;
-        p.pixels[idx + 3] = 255;
+    if (!this.buffer) return;
 
-        xoff += this.incr;
+    // Only render the noise once since it's static
+    if (!this.rendered) {
+      this.buffer.loadPixels();
+      let yoff = 0;
+      for (let y = 0; y < this.height; y++) {
+        let xoff = 0;
+        for (let x = 0; x < this.width; x++) {
+          const idx = (x + y * this.width) * 4;
+          const b = p.noise(xoff, yoff) * 255;
+          this.buffer.pixels[idx] = b;
+          this.buffer.pixels[idx + 1] = b;
+          this.buffer.pixels[idx + 2] = b;
+          this.buffer.pixels[idx + 3] = 255;
+
+          xoff += this.incr;
+        }
+        yoff += this.incr;
       }
-      yoff += this.incr;
+      this.buffer.updatePixels();
+      this.rendered = true;
     }
-    p.updatePixels();
-    p.rect(this.x, this.y, 120, 15);
-    p.text(this.incr, this.x, this.y + 12);
-  }
 
-  destroy(): void {
-    this.sketch.unregisterEntity(this);
+    p.image(this.buffer, this.x, this.y);
+    p.fill(255);
+    p.rect(this.x, this.y, 120, 15);
+    p.fill(0);
+    p.text(this.incr, this.x + 2, this.y + 12);
   }
 }

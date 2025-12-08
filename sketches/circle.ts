@@ -4,7 +4,7 @@ import { defineSketch } from "./types";
 export default defineSketch(
   {
     title: "Pulsing Circle",
-    description: "A simple circle that pulses using a sine wave",
+    description: "A breathing circle expands and contracts in hypnotic rhythm, drifting gently across the canvas like a meditative heartbeat",
     date: "2025-11-30",
   },
   (p: p5) => {

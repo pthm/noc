@@ -1,7 +1,7 @@
 import type p5 from "p5";
-import type { Entity, EntitySketch } from "../../lib/entity-sketch";
+import { Entity } from "../../lib/entity-sketch";
 
-export class BouncingBall implements Entity {
+export class BouncingBall extends Entity {
   private x: number;
   private y: number;
   private vx: number;
@@ -10,28 +10,26 @@ export class BouncingBall implements Entity {
   private color: { r: number; g: number; b: number };
 
   constructor(
-    private sketch: EntitySketch,
+    private p: p5,
     x: number,
     y: number,
-    radius = 20
+    radius = 20,
   ) {
+    super();
     this.x = x;
     this.y = y;
     this.radius = radius;
 
     // Random initial velocity
-    this.vx = (Math.random() - 0.5) * 10;
-    this.vy = (Math.random() - 0.5) * 10;
+    this.vx = (p.random() - 0.5) * 10;
+    this.vy = (p.random() - 0.5) * 10;
 
     // Random color
     this.color = {
-      r: Math.random() * 255,
-      g: Math.random() * 255,
-      b: Math.random() * 255,
+      r: p.random(255),
+      g: p.random(255),
+      b: p.random(255),
     };
-
-    // Self-register with the sketch
-    this.sketch.registerEntity(this);
   }
 
   update(p: p5): void {
@@ -65,9 +63,5 @@ export class BouncingBall implements Entity {
     p.fill(this.color.r, this.color.g, this.color.b, 200);
     p.noStroke();
     p.circle(this.x, this.y, this.radius * 2);
-  }
-
-  destroy(): void {
-    this.sketch.unregisterEntity(this);
   }
 }

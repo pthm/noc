@@ -5,11 +5,11 @@ import { WalkerSketch } from "./WalkerSketch";
 export default defineSketch(
   {
     title: "Camera Walker",
-    description: "A random walker based on values from the system camera",
+    description:
+      "Your camera becomes a compass—a luminous point navigates the grayscale terrain of your world, drawn toward light and shadow",
     date: "2025-12-07",
   },
   (p: p5) => {
-    const sketch = new WalkerSketch();
-    sketch.attach(p);
+    new WalkerSketch(p);
   },
 );

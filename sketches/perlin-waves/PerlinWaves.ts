@@ -1,7 +1,7 @@
 import type p5 from "p5";
-import type { Entity, EntitySketch } from "../../lib/entity-sketch";
+import { Entity } from "../../lib/entity-sketch";
 
-export class PerlinWaves implements Entity {
+export class PerlinWaves extends Entity {
   private amp: number;
   private y: number;
 
@@ -10,23 +10,21 @@ export class PerlinWaves implements Entity {
   private speed: number;
 
   constructor(
-    private sketch: EntitySketch,
+    private p: p5,
     amp: number,
     y: number,
     offset: number,
   ) {
+    super();
     this.amp = amp;
     this.y = y - amp / 2;
 
     this.timeOffset = offset;
     this.incr = 0.01; // spatial frequency - noise change per pixel
     this.speed = 1; // how fast we move through noise space (units per second)
-
-    // Self-register with the sketch
-    this.sketch.registerEntity(this);
   }
 
-  setup(p: p5): void {
+  override setup(p: p5): void {
     //this.timeOffset = p.random(0, 10000);
   }
 
@@ -48,9 +46,5 @@ export class PerlinWaves implements Entity {
     }
 
     p.endShape();
-  }
-
-  destroy(): void {
-    this.sketch.unregisterEntity(this);
   }
 }

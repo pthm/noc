@@ -1,7 +1,12 @@
+import type p5 from "p5";
 import { EntitySketch } from "../../lib/entity-sketch";
 import { PerlinWaves } from "./PerlinWaves";
 
 export class PerlinWavesSketch extends EntitySketch {
+  constructor(p: p5) {
+    super(p);
+  }
+
   setup(): void {
     const p = this.p;
     p.createCanvas(window.innerWidth, window.innerHeight);
@@ -11,7 +16,7 @@ export class PerlinWavesSketch extends EntitySketch {
     let count = 0;
     for (let y = 0; y < p.height; y += p.height / 40) {
       count++;
-      new PerlinWaves(this, 100, y, count);
+      this.add(new PerlinWaves(p, 100, y, count));
     }
   }
 

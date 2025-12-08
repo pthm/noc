@@ -1,22 +1,23 @@
 import type p5 from "p5";
-import type { Entity } from "../../lib/entity-sketch";
+import { Entity } from "../../lib/entity-sketch";
 import type { WalkerSketch } from "./WalkerSketch";
 
-export class Walker implements Entity {
+export class Walker extends Entity {
   private x: number;
   private y: number;
 
   private size: number;
 
   constructor(
+    private p: p5,
     private sketch: WalkerSketch,
     x: number,
     y: number,
   ) {
+    super();
     this.x = x;
     this.y = y;
     this.size = 10;
-    this.sketch.registerEntity(this);
   }
 
   // 8 directions: N, NE, E, SE, S, SW, W, NW
@@ -37,7 +38,7 @@ export class Walker implements Entity {
 
     // Map brightness (0-255) to direction index (0-7)
     const dirIndex = p.floor(p.map(brightness, 0, 255, 0, 8)) % 8;
-    const [dx, dy] = Walker.DIRECTIONS[dirIndex];
+    const [dx, dy] = Walker.DIRECTIONS[dirIndex] ?? [0, 0];
 
     const xstep = dx * this.size;
     const ystep = dy * this.size;
@@ -51,9 +52,5 @@ export class Walker implements Entity {
     g.stroke(255, 255);
     g.fill(255, 255);
     g.circle(this.x, this.y, this.size);
-  }
-
-  destroy(): void {
-    this.sketch.unregisterEntity(this);
   }
 }

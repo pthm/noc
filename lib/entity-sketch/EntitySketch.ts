@@ -1,16 +1,20 @@
 import type p5 from "p5";
-import type { Entity } from "./Entity";
+import { Entity } from "./Entity";
 
 export abstract class EntitySketch {
-  protected p!: p5;
+  protected p: p5;
   private entities = new Set<Entity>();
 
-  /**
-   * Attach this sketch to a p5 instance, wiring up lifecycle methods.
-   * Call this from your p5 constructor callback.
-   */
-  attach(p: p5): void {
+  constructor(p: p5) {
     this.p = p;
+    this.attach();
+  }
+
+  /**
+   * Wire up p5 lifecycle methods.
+   */
+  private attach(): void {
+    const p = this.p;
 
     p.setup = () => this.setup();
     p.draw = () => this.drawInternal();
@@ -61,21 +65,14 @@ export abstract class EntitySketch {
   }
 
   /**
-   * Register an entity to participate in the update/draw loop.
-   * Typically called from the entity's constructor.
-   * If the entity has a setup method, it will be called immediately.
+   * Add an entity to the update/draw loop.
+   * Returns the entity for chaining.
    */
-  registerEntity(entity: Entity): void {
+  add<T extends Entity>(entity: T): T {
     this.entities.add(entity);
+    entity._setRemove(() => this.entities.delete(entity));
     entity.setup?.(this.p);
-  }
-
-  /**
-   * Remove an entity from the update/draw loop.
-   * Call this from an entity's destroy() method.
-   */
-  unregisterEntity(entity: Entity): void {
-    this.entities.delete(entity);
+    return entity;
   }
 
   /**

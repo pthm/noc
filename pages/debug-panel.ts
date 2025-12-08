@@ -323,9 +323,10 @@ export class DebugPanel {
     const startIdx = Math.max(0, this.historyLength - data.length);
     for (let i = 0; i < data.length; i++) {
       const x = (startIdx + i) * step;
+      const value = data[i] ?? 0;
       const normalized = Math.min(
         1,
-        Math.max(0, (data[i] - min) / (max - min)),
+        Math.max(0, (value - min) / (max - min)),
       );
       const y = height - normalized * height;
 

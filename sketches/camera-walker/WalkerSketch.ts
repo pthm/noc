@@ -1,8 +1,12 @@
-import p5 from "p5";
+import type p5 from "p5";
 import { EntitySketch } from "../../lib/entity-sketch";
 import { Walker } from "./Walker";
 
 export class WalkerSketch extends EntitySketch {
+  constructor(p: p5) {
+    super(p);
+  }
+
   private capture!: p5.Element;
   private captureBuffer!: p5.Graphics;
   private drawingLayer!: p5.Graphics;
@@ -27,7 +31,7 @@ export class WalkerSketch extends EntitySketch {
     this.drawingLayer = p.createGraphics(p.width, p.height);
     this.drawingLayer.clear();
 
-    new Walker(this, p.width / 2, p.height / 2);
+    this.add(new Walker(p, this, p.width / 2, p.height / 2));
   }
 
   get graphics(): p5.Graphics {

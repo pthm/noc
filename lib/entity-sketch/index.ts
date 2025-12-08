@@ -1,2 +1,2 @@
-export type { Entity } from "./Entity";
+export { Entity } from "./Entity";
 export { EntitySketch } from "./EntitySketch";

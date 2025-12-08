@@ -6,6 +6,7 @@ import type { SketchSetup } from "../sketches/types";
 import waves from "../sketches/waves";
 import circle from "../sketches/circle";
 import walker from "../sketches/walker/index";
+import vector_balls from "../sketches/vector-balls/index";
 import bouncing_balls from "../sketches/bouncing-balls/index";
 import perlin_noise from "../sketches/perlin-noise/index";
 import perlin_waves from "../sketches/perlin-waves/index";
@@ -15,6 +16,7 @@ export const sketches: Record<string, SketchSetup> = {
   "waves": waves,
   "circle": circle,
   "walker": walker,
+  "vector-balls": vector_balls,
   "bouncing-balls": bouncing_balls,
   "perlin-noise": perlin_noise,
   "perlin-waves": perlin_waves,
